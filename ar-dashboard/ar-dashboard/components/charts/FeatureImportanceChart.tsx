@@ -69,7 +69,7 @@ export default function FeatureImportanceChart({ importances }: Props) {
             cursor={{ fill: '#1a1a1a' }}
             contentStyle={{ background: '#111111', border: '1px solid #2a2a2a', borderRadius: '8px', fontFamily: 'Inter, system-ui, sans-serif', fontSize: '12px', color: '#ffffff' }}
             labelStyle={{ color: '#888888', fontSize: '10px' }}
-            formatter={(value: number) => [value.toFixed(4), 'Importance']}
+            formatter={(value) => [Number(value).toFixed(4), 'Importance']}
           />
           <Bar dataKey="value" radius={[0, 4, 4, 0]} maxBarSize={28}>
             {data.map((entry, i) => (
