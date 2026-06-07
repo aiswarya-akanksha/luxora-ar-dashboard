@@ -95,7 +95,7 @@ export default function ProductInteractionBar({ data }: Props) {
               color: '#ffffff',
             }}
             labelStyle={{ color: '#888888', fontSize: '10px', letterSpacing: '0.1em', marginBottom: '4px' }}
-            formatter={(value, name: string) => [Number(value), TYPE_LABELS[name] ?? name]}
+            formatter={(value, name) => [Number(value), TYPE_LABELS[String(name)] ?? String(name)]}
           />
           <Legend
             formatter={(value) => (

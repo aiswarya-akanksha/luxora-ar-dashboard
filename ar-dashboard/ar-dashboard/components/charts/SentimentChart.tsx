@@ -25,7 +25,7 @@ export default function SentimentChart({ data }: Props) {
           <Tooltip
             cursor={{ fill: '#1a1a1a' }}
             contentStyle={{ background: '#111111', border: '1px solid #2a2a2a', borderRadius: '8px', fontFamily: 'Inter, system-ui, sans-serif', fontSize: '12px', color: '#ffffff' }}
-            formatter={(value, _: string, props: any) => [`${Number(value)} responses (${props.payload.pct}%)`, '']}
+            formatter={(value, _, props: any) => [`${Number(value)} responses (${props.payload.pct}%)`, '']}
             labelStyle={{ color: '#888888', fontSize: '10px' }}
           />
           <Bar dataKey="count" radius={[4, 4, 0, 0]} maxBarSize={64}>
