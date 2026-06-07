@@ -7,6 +7,7 @@ import DemographicsChart from '@/components/charts/DemographicsChart'
 import type { FeedbackRow, ModelRun, DemographicItem } from '@/lib/types'
 
 export const revalidate = 0
+export const dynamic = 'force-dynamic'
 
 function countBy<T>(arr: T[], key: (item: T) => string): DemographicItem[] {
   const counts: Record<string, number> = {}

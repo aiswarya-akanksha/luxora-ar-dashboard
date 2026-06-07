@@ -5,6 +5,7 @@ import InteractionTypeBar from '@/components/charts/InteractionTypeBar'
 import type { ModelRun, CountItem } from '@/lib/types'
 
 export const revalidate = 0
+export const dynamic = 'force-dynamic'
 
 export default async function OverviewPage() {
   const supabase = createServerClient()

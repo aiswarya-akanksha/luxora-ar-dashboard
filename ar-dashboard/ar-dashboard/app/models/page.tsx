@@ -8,6 +8,7 @@ import RunHistoryTable from '@/components/charts/RunHistoryTable'
 import type { ModelRun, RunHistoryItem } from '@/lib/types'
 
 export const revalidate = 0
+export const dynamic = 'force-dynamic'
 
 export default async function ModelsPage() {
   const supabase = createServerClient()

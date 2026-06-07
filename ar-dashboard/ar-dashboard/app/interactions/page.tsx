@@ -6,6 +6,7 @@ import VoiceCommandsChart from '@/components/charts/VoiceCommandsChart'
 import type { CountItem, ProductInteractionItem } from '@/lib/types'
 
 export const revalidate = 0
+export const dynamic = 'force-dynamic'
 
 const INTERACTION_TYPES = [
   'zoom', 'rotate', 'category_filter', 'voice_command',
