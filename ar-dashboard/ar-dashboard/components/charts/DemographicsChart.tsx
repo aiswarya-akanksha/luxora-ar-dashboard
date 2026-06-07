@@ -27,7 +27,7 @@ function DemoBar({ data, title }: { data: DemographicItem[]; title: string }) {
             <Tooltip
               cursor={{ fill: '#1a1a1a' }}
               contentStyle={{ background: '#111111', border: '1px solid #2a2a2a', borderRadius: '8px', fontFamily: 'Inter, system-ui, sans-serif', fontSize: '11px', color: '#ffffff' }}
-              formatter={(value: number) => [value, 'Responses']}
+              formatter={(value) => [Number(value), 'Responses']}
             />
             <Bar dataKey="value" radius={[0, 4, 4, 0]} maxBarSize={16}>
               {data.map((entry, i) => (
