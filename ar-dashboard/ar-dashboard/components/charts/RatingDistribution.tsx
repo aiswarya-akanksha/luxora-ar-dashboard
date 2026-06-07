@@ -27,7 +27,7 @@ export default function RatingDistribution({ data }: Props) {
           <Tooltip
             cursor={{ fill: '#1a1a1a' }}
             contentStyle={{ background: '#111111', border: '1px solid #2a2a2a', borderRadius: '8px', fontFamily: 'Inter, system-ui, sans-serif', fontSize: '12px', color: '#ffffff' }}
-            formatter={(value: number) => [value, 'Responses']}
+            formatter={(value) => [Number(value), 'Responses']}
             labelFormatter={v => `${v} Star${v !== 1 ? 's' : ''}`}
             labelStyle={{ color: '#888888', fontSize: '10px' }}
           />

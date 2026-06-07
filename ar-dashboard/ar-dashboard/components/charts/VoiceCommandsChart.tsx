@@ -108,7 +108,7 @@ export default function VoiceCommandsChart({ data }: Props) {
               color: '#ffffff',
             }}
             labelStyle={{ color: '#888888', fontSize: '10px' }}
-            formatter={(value: number) => [value, 'Times used']}
+            formatter={(value) => [Number(value), 'Times used']}
           />
           <Bar dataKey="count" radius={[0, 4, 4, 0]} maxBarSize={28}>
             {formatted.map((_, i) => (
