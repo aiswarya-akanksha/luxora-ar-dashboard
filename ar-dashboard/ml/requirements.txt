@@ -1,0 +1,6 @@
+supabase
+scikit-learn
+pandas
+numpy
+textblob
+python-dotenv
