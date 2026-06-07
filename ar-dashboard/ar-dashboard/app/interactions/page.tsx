@@ -1,4 +1,4 @@
-import { createServerClient } from '@/lib/supabase/server'
+import { fetchAll } from '@/lib/supabase/server'
 import MetricCard from '@/components/ui/MetricCard'
 import InteractionTypeBar from '@/components/charts/InteractionTypeBar'
 import ProductInteractionBar from '@/components/charts/ProductInteractionBar'
@@ -14,17 +14,17 @@ const INTERACTION_TYPES = [
 ]
 
 export default async function InteractionsPage() {
-  const supabase = createServerClient()
 
-  const { data: rows } = await supabase
-    .from('interactions')
-    .select('type, product_name, action')
+  const rows = await fetchAll<{ type: string; product_name: string | null; action: string | null }>(
+    'interactions',
+    'type, product_name, action'
+  )
 
-  if (!rows) {
+  if (!rows.length) {
     return <p style={{ color: '#888888', fontFamily: 'Inter, system-ui, sans-serif' }}>No interaction data found.</p>
   }
 
-  // ── Type counts ──────────────────────────────────────────────────────────────
+  // Type counts
   const typeCounts: Record<string, number> = {}
   for (const r of rows) {
     const t = r.type ?? 'unknown'
@@ -34,7 +34,7 @@ export default async function InteractionsPage() {
     .map(([name, count]) => ({ name, count }))
     .sort((a, b) => b.count - a.count)
 
-  // ── Product × type matrix ────────────────────────────────────────────────────
+  // Product × type matrix
   const productMap: Record<string, Record<string, number>> = {}
   for (const r of rows) {
     const product = r.product_name?.trim() || 'Unknown'
@@ -43,7 +43,6 @@ export default async function InteractionsPage() {
     productMap[product][type] = (productMap[product][type] ?? 0) + 1
   }
 
-  // Top 8 products by total interactions
   const productData: ProductInteractionItem[] = Object.entries(productMap)
     .map(([product, types]) => ({
       product,
@@ -63,8 +62,8 @@ export default async function InteractionsPage() {
     })
     .slice(0, 8)
 
-  // ── Voice commands ───────────────────────────────────────────────────────────
-  const voiceRows  = rows.filter(r => r.type === 'voice_command')
+  // Voice commands
+  const voiceRows = rows.filter(r => r.type === 'voice_command')
   const actionCounts: Record<string, number> = {}
   for (const r of voiceRows) {
     const a = r.action?.trim() || 'General'
@@ -75,19 +74,16 @@ export default async function InteractionsPage() {
     .sort((a, b) => b.count - a.count)
     .slice(0, 10)
 
-  // ── KPIs ─────────────────────────────────────────────────────────────────────
+  // KPIs
   const totalEvents    = rows.length
   const uniqueProducts = Object.keys(productMap).length
   const addToCartCount = typeCounts['add_to_cart'] ?? 0
   const voiceCount     = typeCounts['voice_command'] ?? 0
   const topType        = typeCountsArray[0]?.name ?? '—'
-
-  const formatType = (t: string) =>
-    t.split('_').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ')
+  const formatType     = (t: string) => t.split('_').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ')
 
   return (
     <div>
-      {/* Page header */}
       <div style={{ marginBottom: '36px' }}>
         <p style={{ color: '#888888', fontSize: '10px', letterSpacing: '0.35em', textTransform: 'uppercase', fontFamily: 'Inter, system-ui, sans-serif', marginBottom: '8px' }}>
           Analytics
@@ -97,42 +93,21 @@ export default async function InteractionsPage() {
         </h1>
       </div>
 
-      {/* KPI cards */}
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '16px', marginBottom: '24px' }}>
-        <MetricCard
-          label="Total Events"
-          value={totalEvents.toLocaleString()}
-          sub="Across all sessions"
-        />
-        <MetricCard
-          label="Add to Cart"
-          value={addToCartCount.toLocaleString()}
-          sub="Conversion events"
-          accent
-        />
-        <MetricCard
-          label="Products Viewed"
-          value={uniqueProducts.toLocaleString()}
-          sub="Unique products interacted with"
-        />
-        <MetricCard
-          label="Voice Commands"
-          value={voiceCount.toLocaleString()}
-          sub={`Most common: ${formatType(topType)}`}
-        />
+        <MetricCard label="Total Events"    value={totalEvents.toLocaleString()}    sub="Across all sessions" />
+        <MetricCard label="Add to Cart"     value={addToCartCount.toLocaleString()} sub="Conversion events" accent />
+        <MetricCard label="Products Viewed" value={uniqueProducts.toLocaleString()} sub="Unique products interacted with" />
+        <MetricCard label="Voice Commands"  value={voiceCount.toLocaleString()}     sub={`Most common: ${formatType(topType)}`} />
       </div>
 
-      {/* Interaction type breakdown */}
       <div style={{ marginBottom: '24px' }}>
         <InteractionTypeBar data={typeCountsArray} />
       </div>
 
-      {/* Product breakdown */}
       <div style={{ marginBottom: '24px' }}>
         <ProductInteractionBar data={productData} />
       </div>
 
-      {/* Voice commands */}
       <div>
         <VoiceCommandsChart data={voiceData} />
       </div>

@@ -1,4 +1,4 @@
-import { createServerClient } from '@/lib/supabase/server'
+import { createServerClient, fetchAll } from '@/lib/supabase/server'
 import MetricCard from '@/components/ui/MetricCard'
 import CartConversionDonut from '@/components/charts/CartConversionDonut'
 import InteractionTypeBar from '@/components/charts/InteractionTypeBar'
@@ -27,10 +27,8 @@ export default async function OverviewPage() {
     .from('feedback')
     .select('*', { count: 'exact', head: true })
 
-  // Interaction types for bar chart
-  const { data: interactionRows } = await supabase
-    .from('interactions')
-    .select('type')
+  // Interaction types for bar chart (paginated — fetches all rows past 1000 limit)
+  const interactionRows = await fetchAll<{ type: string }>('interactions', 'type')
 
   // Compute
   const totalSessions  = run?.total_sessions ?? 0
@@ -40,7 +38,7 @@ export default async function OverviewPage() {
     : '0.0'
 
   const typeCounts: Record<string, number> = {}
-  for (const row of interactionRows ?? []) {
+  for (const row of interactionRows) {
     const t = row.type ?? 'unknown'
     typeCounts[t] = (typeCounts[t] ?? 0) + 1
   }
