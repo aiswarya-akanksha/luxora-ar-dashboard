@@ -86,7 +86,7 @@ export default function RocCurveChart({ lr, rf }: Props) {
           <Tooltip
             contentStyle={{ background: '#111111', border: '1px solid #2a2a2a', borderRadius: '8px', fontFamily: 'Inter, system-ui, sans-serif', fontSize: '11px', color: '#ffffff' }}
             labelStyle={{ color: '#888888', fontSize: '10px' }}
-            formatter={(value: number, name: string) => [value.toFixed(3), name === 'lr' ? 'Logistic Regression' : 'Random Forest']}
+            formatter={(value, name: string) => [Number(value).toFixed(3), name === 'lr' ? 'Logistic Regression' : 'Random Forest']}
           />
           <Legend
             formatter={(value) => (

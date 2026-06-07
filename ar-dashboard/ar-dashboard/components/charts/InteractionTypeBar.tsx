@@ -90,7 +90,7 @@ export default function InteractionTypeBar({ data }: Props) {
             }}
             itemStyle={{ color: '#c9a84c' }}
             labelStyle={{ color: '#888888', fontSize: '10px', letterSpacing: '0.1em' }}
-            formatter={(value: number) => [value.toLocaleString(), 'Events']}
+            formatter={(value) => [Number(value).toLocaleString(), 'Events']}
           />
           <Bar dataKey="count" radius={[4, 4, 0, 0]} maxBarSize={48}>
             {formatted.map((entry, i) => (
